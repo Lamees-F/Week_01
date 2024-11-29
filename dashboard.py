@@ -12,7 +12,7 @@ st.set_page_config(
 
 #######################
 # Load data
-df_reshaped = pd.read_csv('data\processed_dataset.csv')
+df_reshaped = pd.read_csv('processed_dataset.csv')
 df_reshaped['region'].replace(to_replace='Others', value='Riyadh', inplace=True)
 df_reshaped['region'].replace(to_replace="'مكة المكرمة'", value='Makkah', inplace=True)
 
