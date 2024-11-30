@@ -5,7 +5,7 @@ import plotly.express as px
 
 # Page configuration
 st.set_page_config(
-    page_title="KSA Job Compass",
+    page_title="JobCompass",
     page_icon="🧭",
     layout="wide",
     initial_sidebar_state="expanded")
@@ -17,7 +17,7 @@ df_reshaped = pd.read_csv('processed_dataset.csv')
 #df_reshaped['region'].replace(to_replace="'مكة المكرمة'", value='Makkah', inplace=True)
 
 with st.sidebar:
-    st.title('🧭 KSA Job Compass Dashboard')
+    st.title('🧭 JobCompass Dashboard')
     
 
     region_list = sorted(list(df_reshaped.region.unique()))
@@ -139,7 +139,7 @@ with col[2]:
         width=None,
         column_config={
             "eco_activity": st.column_config.TextColumn(
-                "Economy Activity",
+                "Economy Sector",
                  width='medium',
             ),
             "count": st.column_config.ProgressColumn(
