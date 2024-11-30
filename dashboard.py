@@ -1,7 +1,7 @@
 # Import libraries
-import pandas as pd
-import matplotlib.pyplot as plt
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
 # Page configuration
 st.set_page_config(
@@ -12,9 +12,9 @@ st.set_page_config(
 
 #######################
 # Load data
-df_reshaped = pd.read_csv('processed_dataset.csv')
-df_reshaped['region'].replace(to_replace='Others', value='Riyadh', inplace=True)
-df_reshaped['region'].replace(to_replace="'مكة المكرمة'", value='Makkah', inplace=True)
+df_reshaped = pd.read_csv('data\processed_dataset.csv')
+#df_reshaped['region'].replace(to_replace='Others', value='Riyadh', inplace=True)
+#df_reshaped['region'].replace(to_replace="'مكة المكرمة'", value='Makkah', inplace=True)
 
 with st.sidebar:
     st.title('🧭 KSA Job Compass Dashboard')
@@ -89,15 +89,23 @@ col = st.columns((2, 4.5, 1.5), gap='medium')
 with col[0]:
     
     st.markdown('#### Jobs based on Gender')
+    df_selected_region['gender'] = df_selected_region['gender'].map({0:'Male',1:'Female',2:'Both'})
     gender_count = df_selected_region['gender'].value_counts()
     st.bar_chart(gender_count,color='#00b30095')
   
     st.markdown('#### Contract Type')
+    df_selected_region['contract'] = df_selected_region['contract'].map({0:'Remote',1:'Full Time'})
     job_status_count = df_selected_region['contract'].value_counts()
-    fig, ax = plt.subplots()
-    ax.pie(job_status_count, labels=job_status_count.index, autopct='%1.1f%%', startangle=90, colors=['#00b30095', '#00660095'])
-    ax.axis('equal')
-    st.pyplot(fig)
+    fig = px.pie(
+    names=job_status_count.index,
+    values=job_status_count,
+    hole=0, 
+    color=job_status_count.index,
+    color_discrete_map={'Remote': '#00b300', 'Full Time': '#006600'} 
+    )
+
+# Display the pie chart in Streamlit
+    st.plotly_chart(fig)
 
 
 with col[1]:
@@ -105,6 +113,17 @@ with col[1]:
     make_map()
 
     st.markdown('#### Company size in '+ selected_region)
+    df_selected_region['comp_size'] =  df_selected_region['comp_size'].map(
+{
+    'MA':'Meduim Type A',
+    'MB' : 'Meduim Type A',
+    'MC':'Meduim Type C',
+    'SA': 'Small Type A',
+    'SB':'Meduim Type B',
+    'L':'Large',
+    'G':'Gigantic',
+    'U': 'undisclosed'  # handle nan as 'U': undisclosed
+})
     comp_size_counts = df_selected_region['comp_size'].value_counts()
     st.bar_chart(comp_size_counts,color='#00b30095')
 
@@ -134,7 +153,7 @@ with col[2]:
     )
     with st.expander('About', expanded=True):
         st.write('''
-            - Data: [JDarat 2020](https:).
+            - Data: [JDarat 2020](https://www.kaggle.com/datasets/moayadalkhozayem/job-postings-in-saudi-arabia).
             - :green[**Job Distribuation in KSA**]: General overview of data distribuion as clusters
             - :green[**Demands Economy Activity**]: shows the highest Economy Activity in a region 
             - :green[**Jobs based on Gender**]: shows jobs number based on gender 
