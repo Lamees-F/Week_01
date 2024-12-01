@@ -12,19 +12,23 @@ st.set_page_config(
 
 #######################
 # Load data
-df_reshaped = pd.read_csv('processed_dataset.csv')
+df_reshaped = pd.read_csv('data\processed_dataset.csv')
 #df_reshaped['region'].replace(to_replace='Others', value='Riyadh', inplace=True)
 #df_reshaped['region'].replace(to_replace="'مكة المكرمة'", value='Makkah', inplace=True)
 
 with st.sidebar:
-    st.title('🧭 JobCompass Dashboard')
+    st.title('🧭 Job Compass Dashboard')
     
 
     region_list = sorted(list(df_reshaped.region.unique()))
-    
-    selected_region = st.selectbox('Select Region', region_list)
-    df_selected_region = df_reshaped[df_reshaped.region == selected_region]
+    job_list = sorted(list(df_reshaped.job_title.unique()))
 
+    selected_region = st.selectbox('Select Region', region_list)
+    selected_job = st.selectbox('Select Job', job_list)
+
+    df_selected_region = df_reshaped[df_reshaped.region == selected_region]
+    df_selected_region = df_reshaped[df_reshaped.job_title == selected_job]
+    
 
 # map
 def make_map():
@@ -153,7 +157,7 @@ with col[2]:
     )
     with st.expander('About', expanded=True):
         st.write('''
-            - Data: [JDarat 2022](https://www.kaggle.com/datasets/moayadalkhozayem/job-postings-in-saudi-arabia).
+            - Data: [JDarat 2020](https://www.kaggle.com/datasets/moayadalkhozayem/job-postings-in-saudi-arabia).
             - :green[**Job Distribuation in KSA**]: General overview of data distribuion as clusters
             - :green[**Demands Economy Activity**]: shows the highest Economy Activity in a region 
             - :green[**Jobs based on Gender**]: shows jobs number based on gender 
