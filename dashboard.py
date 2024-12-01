@@ -153,7 +153,7 @@ with col[2]:
     )
     with st.expander('About', expanded=True):
         st.write('''
-            - Data: [JDarat 2020](https://www.kaggle.com/datasets/moayadalkhozayem/job-postings-in-saudi-arabia).
+            - Data: [JDarat 2022](https://www.kaggle.com/datasets/moayadalkhozayem/job-postings-in-saudi-arabia).
             - :green[**Job Distribuation in KSA**]: General overview of data distribuion as clusters
             - :green[**Demands Economy Activity**]: shows the highest Economy Activity in a region 
             - :green[**Jobs based on Gender**]: shows jobs number based on gender 
